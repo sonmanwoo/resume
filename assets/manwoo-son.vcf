@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:손;만우;;;
+FN:손만우
+ORG:GS칼텍스;바이오공정팀
+TITLE:책임연구원
+TEL;TYPE=CELL:+82-10-3112-5602
+TEL;TYPE=WORK,VOICE:+82-42-866-1719
+TEL;TYPE=WORK,FAX:+82-42-866-1711
+EMAIL;TYPE=WORK:manwooson@gscaltex.com
+ADR;TYPE=WORK:;;엑스포로 359 (문지동 GS칼텍스중앙기술연구소);유성구;대전광역시;34122;대한민국
+URL:https://sonmanwoo.github.io/resume/
+END:VCARD

@@ -1,0 +1,51 @@
+﻿[
+    {
+        "dir":  "assets/frames/scene0",
+        "count":  61
+    },
+    {
+        "dir":  "assets/frames/c01",
+        "count":  49
+    },
+    {
+        "dir":  "assets/frames/scene1",
+        "count":  61,
+        "hold":  "modeling"
+    },
+    {
+        "dir":  "assets/frames/c12",
+        "count":  49
+    },
+    {
+        "dir":  "assets/frames/scene2",
+        "count":  61,
+        "hold":  "lab"
+    },
+    {
+        "dir":  "assets/frames/c23",
+        "count":  49
+    },
+    {
+        "dir":  "assets/frames/scene3",
+        "count":  61,
+        "hold":  "data"
+    },
+    {
+        "dir":  "assets/frames/c34",
+        "count":  49
+    },
+    {
+        "dir":  "assets/frames/scene4",
+        "count":  61,
+        "hold":  "agents"
+    },
+    {
+        "dir":  "assets/frames/c45",
+        "count":  49
+    },
+    {
+        "dir":  "assets/frames/scene5",
+        "count":  61,
+        "hold":  "career"
+    }
+]

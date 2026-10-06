@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>손만우 — Process Engineer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: #0a1420; overflow:hidden; }
+  body { font-family: "Pretendard", -apple-system, "Malgun Gothic", sans-serif; }
+
+  #stage { position: fixed; inset: 0; }
+  #stage canvas { width: 100%; height: 100%; display: block; }
+  #scroll-space { position: fixed; inset:0; overflow-y:auto; overscroll-behavior:contain; }
+
+  /* ---- hero ---- */
+  #hero {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #fff; text-align: center;
+    text-shadow: 0 2px 24px rgba(0,0,0,.6);
+    pointer-events: none;
+  }
+  #hero h1 { font-size: clamp(40px, 7vw, 84px); letter-spacing: .18em; font-weight: 700; }
+  #hero p { margin-top: 12px; font-size: clamp(14px, 2vw, 20px); color: #cfe6df; letter-spacing: .04em; }
+  #hero .hint { position: absolute; bottom: 36px; font-size: 13px; color: #9fb8c8; animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(7px); } }
+
+  /* ---- overlay cards ---- */
+  .card {
+    position: fixed;
+    left: clamp(20px, 6vw, 96px);
+    top: 50%;
+    transform: translateY(-50%) translateY(24px);
+    max-width: min(480px, 86vw);
+    padding: 28px 32px;
+    border-radius: 16px;
+    background: rgba(8, 18, 28, .62);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(159, 214, 200, .18);
+    color: #eef6f3;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s linear;
+  }
+  .card .kicker {
+    font-size: 12px; font-weight: 700; letter-spacing: .22em;
+    color: #7fd6c0; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .card h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 700; margin-bottom: 14px; }
+  .card ul { list-style: none; display: grid; gap: 8px; }
+  .card li { position: relative; padding-left: 18px; font-size: clamp(13px, 1.6vw, 15px); color: #c6d8d2; line-height: 1.55; }
+  .card li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: #7fd6c0; }
+  .card li strong { color: #fff; font-weight: 600; }
+
+  /* career card: centered, timeline style */
+  .card.center { left: 50%; transform: translate(-50%, -50%) translateY(24px); text-align: center; max-width: min(560px, 90vw); width:calc(100% - 40px); }
+  .card.center ul { text-align: left; }
+  .card .sign { margin-top: 18px; font-size: 13px; color: #9fb8c8; letter-spacing: .08em; }
+
+  #loading {
+    position: fixed; inset: 0; display: flex; flex-direction: column; gap: 14px;
+    align-items: center; justify-content: center;
+    background: #0a1420; color: #9fb8c8; font-size: 14px; letter-spacing: .1em;
+    transition: opacity .5s; z-index: 10;
+  }
+  #loading.done { opacity: 0; pointer-events: none; }
+  #bar { width: 220px; height: 2px; background: rgba(159,214,200,.15); }
+  #bar i { display: block; height: 100%; width: 0; background: #7fd6c0; transition: width .2s; }
+</style>
+<link rel="icon" href="../assets/favicon.svg">
+<style>
+.resume-nav{position:fixed;top:16px;left:16px;right:16px;z-index:20;display:flex;gap:8px;flex-wrap:wrap;font:12px "Malgun Gothic",sans-serif}
+.resume-nav a,.resume-nav button{color:#eef6f3;background:#10251fee;border:1px solid #63766d;border-radius:99px;padding:10px 14px;text-decoration:none;cursor:pointer;font:inherit;min-height:38px}
+.resume-nav a:focus-visible,.resume-nav button:focus-visible{outline:3px solid #d7ef80;outline-offset:3px}
+@media(max-width:600px){.resume-nav{gap:5px;top:10px;left:10px;right:10px}.resume-nav a,.resume-nav button{padding:8px 10px;font-size:10px}.card{padding:22px;max-height:65vh;overflow:auto}.card li{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{background:#0a1420;overflow:auto}#stage,#scroll-space,#loading{display:none!important}#hero{position:relative;min-height:70vh;opacity:1!important;padding:100px 20px 40px}#hero .hint{display:none}.card,.card.center{position:relative;left:auto;top:auto;transform:none!important;opacity:1!important;margin:24px auto;max-width:620px;width:calc(100% - 40px);text-align:left}.resume-nav button{display:none}}
+</style></head>
+<body><nav class="resume-nav" aria-label="이력서 탐색"><a href="../">← 소개</a><button type="button" data-chapter="modeling">모델링</button><button type="button" data-chapter="lab">실험</button><button type="button" data-chapter="data">데이터</button><button type="button" data-chapter="agents">AI</button><button type="button" data-chapter="career">경력</button><a href="../#contact">연락처 ↗</a></nav>
+<div id="loading">FEEDING&nbsp;THE&nbsp;PROCESS…<div id="bar"><i></i></div></div>
+<div id="stage"><canvas id="cv"></canvas></div>
+
+<div id="hero">
+  <h1>손 만 우</h1>
+  <p>화학공학 · 공정 모델링 &amp; 최적화</p>
+  <div class="hint">▼ scroll — feed 투입</div>
+</div>
+
+<div class="card" id="card-modeling">
+  <div class="kicker">Process Modeling</div>
+  <h2>공정 모델링 · 설계 · 최적화</h2>
+  <ul>
+    <li><strong>Aspen Plus · HYSYS</strong> 기반 반응·정제 공정 모델링</li>
+    <li>NCC 공정 최적화, <strong>BTX 전공정 모델</strong> 구축 및 시운전 지원</li>
+    <li>신·증설 설계, 에너지 절감, Debottlenecking</li>
+    <li>품질 이슈 엔지니어링 솔루션 (Xylene 불순물 저감 등)</li>
+  </ul>
+</div>
+
+<div class="card" id="card-lab">
+  <div class="kicker">Lab &amp; Pilot</div>
+  <h2>실험으로 검증하는 공정 개발</h2>
+  <ul>
+    <li>바이오 유래 케미칼 <strong>탈색·탈취 공정 개발</strong></li>
+    <li>증류·추출·흡착·여과, <strong>수소화 반응</strong>을 통한 이취 물질 전환</li>
+    <li><strong>Pilot Scale 증류 장치</strong> 구축 및 실험</li>
+    <li>상업 공정 운전 분석 및 Debottlenecking</li>
+  </ul>
+</div>
+
+<div class="card" id="card-data">
+  <div class="kicker">Data &amp; AI</div>
+  <h2>데이터로 읽는 공정</h2>
+  <ul>
+    <li><strong>Python</strong> 기반 데이터 모델링 · AI 추론 · 최적화</li>
+    <li><strong>베이지안 최적화</strong> 실험 설계, Fouling 인자 분석</li>
+    <li>공정 이상 탐지·예측 모델, 데이터 기반 인과 관계 도출</li>
+    <li><strong>Explainable AI</strong>로 품질 저해 요소 규명</li>
+  </ul>
+</div>
+
+<div class="card" id="card-agents">
+  <div class="kicker">AI Agents</div>
+  <h2>에이전트 기반 연구 자동화</h2>
+  <ul>
+    <li><strong>LLM 에이전트</strong>를 활용한 연구 워크플로우 자동화</li>
+    <li>실험 설계 · 데이터 분석 · 문헌 조사 연계 <strong>에이전트 파이프라인</strong></li>
+    <li>연구 생산성 향상을 위한 에이전트 도구 개발 및 적용</li>
+  </ul>
+</div>
+
+<div class="card center" id="card-career">
+  <div class="kicker">Journey</div>
+  <h2>공정은 계속됩니다</h2>
+  <ul>
+    <li><strong>2011–2018</strong> 건국대학교 화학공학 학사 · 석사</li>
+    <li><strong>2018–2023</strong> LG화학 석유화학연구소 선임연구원</li>
+    <li><strong>2023–현재</strong> GS칼텍스 기술연구소 책임연구원</li>
+  </ul>
+  <div class="sign">손만우 · Process Modeling &amp; Optimization</div>
+</div>
+
+<div id="scroll-space" tabindex="0" role="region" aria-label="스크롤 이력서 탐색 영역"><div id="scroll-distance"></div></div>
+
+<script>
+const PX_PER_FRAME = 34;    // scroll px per video frame
+const HOLD_PX = 900;        // scroll px a text card stays on screen
+const FADE_PX = 220;        // fade in/out ramp inside a hold
+
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+
+// timeline: [{kind:"clip", seg, startPx, lenPx} | {kind:"hold", id, startPx, lenPx}]
+let timeline = [], totalPx = 0, segFrames = [];
+
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) fetch("manifest.json").then(r => { if(!r.ok) throw new Error("manifest"); return r.json(); }).then(manifest => {
+  let px = 0;
+  manifest.forEach((seg, si) => {
+    const len = seg.count * PX_PER_FRAME;
+    timeline.push({ kind: "clip", si, seg, startPx: px, lenPx: len });
+    px += len;
+    if (seg.hold) {
+      timeline.push({ kind: "hold", id: seg.hold, si, startPx: px, lenPx: HOLD_PX });
+      px += HOLD_PX;
+    }
+  });
+  totalPx = px;
+  document.getElementById("scroll-distance").style.height = (totalPx + innerHeight) + "px";
+  preload(manifest);
+  document.querySelectorAll('[data-chapter]').forEach(button => button.addEventListener('click', () => {
+    const target=timeline.find(e=>e.kind==='hold' && e.id===button.dataset.chapter);
+    if(target) document.getElementById("scroll-space").scrollTo({top:target.startPx+100,behavior:'auto'});
+  }));
+}).catch(()=>{document.getElementById('loading').innerHTML='<p>화면을 불러오지 못했습니다.</p><a style="color:white" href="../">텍스트 이력서 보기 →</a>';});
+
+function src(seg, i) { return `${seg.dir}/${String(i + 1).padStart(3, "0")}.webp`; }
+
+// progressive preload: segment 0 fully, then the rest in order
+function preload(manifest) {
+  const bar = document.querySelector("#bar i");
+  segFrames = manifest.map(() => []);
+  let chain = Promise.resolve();
+  manifest.forEach((seg, si) => {
+    chain = chain.then(() => new Promise(done => {
+      let loaded = 0;
+      for (let i = 0; i < seg.count; i++) {
+        const img = new Image();
+        img.onload = img.onerror = () => {
+          if(started) render();
+          if (++loaded === seg.count) {
+            if (si === 0) start();
+            done();
+          }
+          if (si === 0) bar.style.width = (loaded / seg.count * 100) + "%";
+        };
+        img.src = src(seg, i);
+        segFrames[si].push(img);
+      }
+      if (!seg.count) done();
+    }));
+  });
+}
+
+let started = false, lastDrawn = null;
+function start() {
+  if (started) return;
+  started = true;
+  document.getElementById("loading").classList.add("done");
+  document.getElementById("scroll-space").addEventListener("scroll", render, { passive: true });
+  addEventListener("resize", () => { fit(); lastDrawn = null; render(); });
+  fit();
+  render();
+}
+
+function fit() {
+  cv.width = innerWidth * devicePixelRatio;
+  cv.height = innerHeight * devicePixelRatio;
+}
+
+function draw(si, fi) {
+  const key = si + ":" + fi;
+  if (key === lastDrawn) return;
+  const img = (segFrames[si] || [])[fi];
+  if (!img || !img.complete || !img.naturalWidth) return;
+  lastDrawn = key;
+  const s = Math.max(cv.width / img.naturalWidth, cv.height / img.naturalHeight);
+  const w = img.naturalWidth * s, h = img.naturalHeight * s;
+  ctx.drawImage(img, (cv.width - w) / 2, (cv.height - h) / 2, w, h);
+}
+
+function render() {
+  const y = Math.min(document.getElementById("scroll-space").scrollTop, totalPx - 1);
+
+  // find active timeline entry
+  let entry = timeline[0];
+  for (const e of timeline) if (y >= e.startPx) entry = e; else break;
+
+  if (entry.kind === "clip") {
+    const t = (y - entry.startPx) / entry.lenPx;
+    draw(entry.si, Math.min(entry.seg.count - 1, Math.floor(t * entry.seg.count)));
+  } else {
+    draw(entry.si, segFrames[entry.si].length - 1); // hold on last frame
+  }
+
+  // hero fades over first clip
+  const heroEnd = timeline[0] ? timeline[0].lenPx * 0.6 : 1;
+  document.getElementById("hero").style.opacity = Math.max(0, 1 - y / heroEnd);
+
+  // overlay cards
+  for (const e of timeline) {
+    if (e.kind !== "hold") continue;
+    const el = document.getElementById("card-" + e.id);
+    if (!el) continue;
+    const local = y - e.startPx;
+    let o = 0;
+    if (local > -FADE_PX && local < e.lenPx + FADE_PX) {
+      const fadeIn = Math.min(1, (local + FADE_PX) / FADE_PX);
+      const isLast = e === timeline[timeline.length - 1];
+      const fadeOut = isLast ? 1 : Math.min(1, (e.lenPx - local) / FADE_PX);
+      o = Math.max(0, Math.min(fadeIn, fadeOut));
+    }
+    el.style.opacity = o;
+    el.setAttribute("aria-hidden",String(o < 0.1));
+    const lift = (1 - o) * 24;
+    el.style.transform = el.classList.contains("center")
+      ? `translate(-50%,-50%) translateY(${lift}px)`
+      : `translateY(-50%) translateY(${lift}px)`;
+  }
+}
+fit();
+</script>
+</body>
+</html>
