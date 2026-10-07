@@ -33,7 +33,7 @@
     left: clamp(20px, 6vw, 96px);
     top: 50%;
     transform: translateY(-50%) translateY(24px);
-    max-width: min(480px, 86vw);
+    max-width: min(520px, 88vw);
     padding: 28px 32px;
     border-radius: 16px;
     background: rgba(8, 18, 28, .62);
@@ -55,6 +55,15 @@
   .card li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: #7fd6c0; }
   .card li strong { color: #fff; font-weight: 600; }
 
+  /* theme card: 역량(cap) → 사례(ex) */
+  .card .caps { display: grid; gap: 14px; }
+  .card .cap h3 { position: relative; padding-left: 18px; font-size: clamp(14px, 1.7vw, 16px); font-weight: 600; color: #fff; line-height: 1.4; }
+  .card .cap h3::before { content: ""; position: absolute; left: 2px; top: .5em; width: 6px; height: 6px; border-radius: 50%; background: #7fd6c0; }
+  .card .cap h3 small { font-size: .8em; font-weight: 400; color: #8fb3a8; margin-left: 4px; }
+  .card .cap ul.ex { margin-top: 5px; gap: 3px; }
+  .card .cap ul.ex li { font-size: clamp(12px, 1.45vw, 14px); color: #b4c9c2; }
+  .card .cap ul.ex li::before { content: "↳"; width: auto; height: auto; background: none; top: 0; left: 1px; color: #5f9c8e; }
+
   /* career card: centered, timeline style */
   .card.center { left: 50%; transform: translate(-50%, -50%) translateY(24px); text-align: center; max-width: min(560px, 90vw); width:calc(100% - 40px); }
   .card.center ul { text-align: left; }
@@ -75,7 +84,7 @@
 .resume-nav{position:fixed;top:16px;left:16px;right:16px;z-index:20;display:flex;gap:8px;flex-wrap:wrap;font:12px "Malgun Gothic",sans-serif}
 .resume-nav a,.resume-nav button{color:#eef6f3;background:#10251fee;border:1px solid #63766d;border-radius:99px;padding:10px 14px;text-decoration:none;cursor:pointer;font:inherit;min-height:38px}
 .resume-nav a:focus-visible,.resume-nav button:focus-visible{outline:3px solid #d7ef80;outline-offset:3px}
-@media(max-width:600px){.resume-nav{gap:5px;top:10px;left:10px;right:10px}.resume-nav a,.resume-nav button{padding:8px 10px;font-size:10px}.card{padding:22px;max-height:65vh;overflow:auto}.card li{font-size:12px}}
+@media(max-width:600px){.resume-nav{gap:5px;top:10px;left:10px;right:10px}.resume-nav a,.resume-nav button{padding:8px 10px;font-size:10px}.card{padding:22px;max-height:calc(100vh - 120px);overflow:auto}.card li{font-size:12px}}
 @media(prefers-reduced-motion:reduce){html{background:#0a1420;overflow:auto}#stage,#scroll-space,#loading{display:none!important}#hero{position:relative;min-height:70vh;opacity:1!important;padding:100px 20px 40px}#hero .hint{display:none}.card,.card.center{position:relative;left:auto;top:auto;transform:none!important;opacity:1!important;margin:24px auto;max-width:620px;width:calc(100% - 40px);text-align:left}.resume-nav button{display:none}}
 </style></head>
 <body><nav class="resume-nav" aria-label="이력서 탐색"><a href="../">← 소개</a><button type="button" data-chapter="modeling">모델링</button><button type="button" data-chapter="lab">실험</button><button type="button" data-chapter="data">데이터</button><button type="button" data-chapter="agents">AI</button><button type="button" data-chapter="career">경력</button><a href="../#contact">연락처 ↗</a></nav>
@@ -90,45 +99,118 @@
 
 <div class="card" id="card-modeling">
   <div class="kicker">Process Modeling</div>
-  <h2>공정 모델링 · 설계 · 최적화</h2>
-  <ul>
-    <li><strong>Aspen Plus · HYSYS</strong> 기반 반응·정제 공정 모델링</li>
-    <li>NCC 공정 최적화, <strong>BTX 전공정 모델</strong> 구축 및 시운전 지원</li>
-    <li>신·증설 설계, 에너지 절감, Debottlenecking</li>
-    <li>품질 이슈 엔지니어링 솔루션 (Xylene 불순물 저감 등)</li>
-  </ul>
+  <h2>공정 모델링 · 최적화 · 검증</h2>
+  <div class="caps">
+    <div class="cap">
+      <h3>공정 시뮬레이션 · 제어 <small>Aspen Plus · HYSYS · EDR · Dynamic</small></h3>
+      <ul class="ex">
+        <li>NCC 공정 최적화, BTX 전공정 모델 구축 및 시운전 지원</li>
+        <li>SRU · OCU 공정 최적화, PID · 모델 기반 제어</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>공정 설계 · Debottlenecking</h3>
+      <ul class="ex">
+        <li>신·증설 설계, 에너지 절감, 하절기 공정 병목 개선</li>
+        <li>Xylene 불순물 저감 등 품질 이슈 해결</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>재현 가능한 공정 계산 · 사업성(TEA) 검증</h3>
+      <ul class="ex">
+        <li>반도체 케미칼 분리정제 공정 컨셉 정량 비교 패키지</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <div class="card" id="card-lab">
   <div class="kicker">Lab &amp; Pilot</div>
   <h2>실험으로 검증하는 공정 개발</h2>
-  <ul>
-    <li>바이오 유래 케미칼 <strong>탈색·탈취 공정 개발</strong></li>
-    <li>증류·추출·흡착·여과, <strong>수소화 반응</strong>을 통한 이취 물질 전환</li>
-    <li><strong>Pilot Scale 증류 장치</strong> 구축 및 실험</li>
-    <li>상업 공정 운전 분석 및 Debottlenecking</li>
-  </ul>
+  <div class="caps">
+    <div class="cap">
+      <h3>분리정제 실험 <small>증류 · 추출 · 흡착 · 여과</small></h3>
+      <ul class="ex">
+        <li>바이오 유래 케미칼 탈색 · 탈취 공정 개발</li>
+        <li>Pilot Scale 증류 장치 구축 및 실험</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>반응 · 중합 실험</h3>
+      <ul class="ex">
+        <li>수소화 반응을 통한 이취 물질 전환</li>
+        <li>BTX · 2,3-BDO · Latex 추출 · 증류 · 중합</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>실험 장비 · 인프라 구축</h3>
+      <ul class="ex">
+        <li>결정화 속도론 측정장비 설계 · 조달</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <div class="card" id="card-data">
   <div class="kicker">Data &amp; AI</div>
   <h2>데이터로 읽는 공정</h2>
-  <ul>
-    <li><strong>Python</strong> 기반 데이터 모델링 · AI 추론 · 최적화</li>
-    <li><strong>베이지안 최적화</strong> 실험 설계, Fouling 인자 분석</li>
-    <li>공정 이상 탐지·예측 모델, 데이터 기반 인과 관계 도출</li>
-    <li><strong>Explainable AI</strong>로 품질 저해 요소 규명</li>
-  </ul>
+  <div class="caps">
+    <div class="cap">
+      <h3>실험 최적화 <small>DOE · 베이지안 · Surrogate model</small></h3>
+      <ul class="ex">
+        <li>논문 2편: Surrogate model 기반 실험 최적화, 능동형 실험 최적화</li>
+        <li>Surrogate model 기반 바이오케미칼 TEA 최적화</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>공정 데이터 해석 <small>이상 탐지 · Explainable AI</small></h3>
+      <ul class="ex">
+        <li>Fouling 인자 분석, 품질 저해 요소 규명</li>
+        <li>중합 압력 예측 및 요인 분석</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>비전 · 영상 분석</h3>
+      <ul class="ex">
+        <li>라텍스 필름 표면 결함 분석</li>
+        <li>결정화 속도론 딥러닝 영상분석 논문 재현</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <div class="card" id="card-agents">
-  <div class="kicker">AI Agents</div>
-  <h2>에이전트 기반 연구 자동화</h2>
-  <ul>
-    <li><strong>LLM 에이전트</strong>를 활용한 연구 워크플로우 자동화</li>
-    <li>실험 설계 · 데이터 분석 · 문헌 조사 연계 <strong>에이전트 파이프라인</strong></li>
-    <li>연구 생산성 향상을 위한 에이전트 도구 개발 및 적용</li>
-  </ul>
+  <div class="kicker">AI Agents &amp; Platform</div>
+  <h2>AI로 연구를 잇다</h2>
+  <div class="caps">
+    <div class="cap">
+      <h3>멀티 에이전트 기반 연구</h3>
+      <ul class="ex">
+        <li>연구소 DX TF 기술 리딩 (AI 에이전트 · 로봇)</li>
+        <li>오케스트레이터 · 전문 에이전트 · 독립 검증 구조의 연구 검토</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>실험 자동화 · 디지털 트윈</h3>
+      <ul class="ex">
+        <li>3D 렌더링 모델 개발 및 3D 프린터 활용 자체 실험 설비 제작</li>
+        <li>Isaac Sim 기반 실험 워크셀 트윈 · 로봇 시료 로딩 시뮬레이션</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>연구원 검증 플랫폼</h3>
+      <ul class="ex">
+        <li>수소문 서비스 개발: GS 해커톤 개발자 리그 2위, 4개 부서 협업</li>
+        <li>공개 논문 284건 · 연구자 1,038명 기반 검증자 매칭</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <h3>연구 지식 체계</h3>
+      <ul class="ex">
+        <li>연구산출물 지식 DB 및 그래프 구축</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <div class="card center" id="card-career">
@@ -137,8 +219,7 @@
   <ul>
     <li><strong>2011–2018</strong> 건국대학교 화학공학 학사 · 석사</li>
     <li><strong>2018–2023</strong> LG화학 석유화학연구소 선임연구원</li>
-    <li><strong>2023–현재</strong> GS칼텍스 기술연구소 책임연구원</li>
-  </ul>
+    <li><strong>2023–현재</strong> GS칼텍스 기술연구소 책임연구원</li>  </ul>
   <div class="sign">손만우 · Process Modeling &amp; Optimization</div>
 </div>
 
