@@ -58,7 +58,7 @@
 </head>
 <body>
 <div id="world"></div>
-<script src="scrub-engine.js?v=2"></script>
+<script src="scrub-engine.js?v=3"></script>
 <script>
 const cap = (title, sub, items) =>
   `<div class="cap"><h3>${title}${sub ? `<small>${sub}</small>` : ''}</h3><ul>${items.map(t => `<li>${t}</li>`).join('')}</ul></div>`;
@@ -68,38 +68,38 @@ const world = mountScrollWorld(document.getElementById('world'), {
   brand: { name: 'MW', href: '../' },
   nav: false,
   hint: 'scroll',
-  diveScroll: 1.4, connScroll: 0.9,
+  diveScroll: 1.4,
   sections: [
-    { id: 'intro', label: '소개', still: P + 'dive_0.webp', clip: V + 'dive_0.mp4', scroll: 1.6, linger: 0.3,
+    { id: 'intro', label: '소개', still: P + 'zone_1.webp', clip: V + 'intro.mp4', scroll: 1.2,
       eyebrow: 'Process Engineer', title: '손만우',
       body: '화학공학 · 공정 모델링 & 최적화. 실험의 질문을 모델로 풀고, 검증 가능한 공정으로 연결합니다.',
       html: '<button class="to-card" type="button" onclick="world.jumpTo(6)">명함 바로 보기 →</button>' },
-    { id: 'modeling', label: '모델링', still: P + 'dive_1.webp', clip: V + 'dive_1.mp4', scroll: 1.9, linger: 0.45,
+    { id: 'modeling', label: '모델링', still: P + 'zone_1.webp', clip: V + 'zone_1.mp4', scroll: 2.6, linger: 0.45,
       eyebrow: 'Process Modeling', title: '공정 모델링 · 최적화 · 검증',
       html: '<div class="caps">' +
         cap('공정 시뮬레이션 · 제어', 'Aspen Plus · HYSYS · EDR · Dynamic', ['NCC 공정 최적화, BTX 전공정 모델 구축 및 시운전 지원', 'SRU · OCU 공정 최적화, PID · 모델 기반 제어']) +
         cap('공정 설계 · Debottlenecking', '', ['신·증설 설계, 에너지 절감, 하절기 공정 병목 개선', 'Xylene 불순물 저감 등 품질 이슈 해결']) +
         cap('재현 가능한 공정 계산 · 사업성(TEA) 검증', '', ['반도체 케미칼 분리정제 공정 컨셉 정량 비교 패키지']) + '</div>' },
-    { id: 'lab', label: '실험', still: P + 'dive_2.webp', clip: V + 'dive_2.mp4', scroll: 1.9, linger: 0.45,
+    { id: 'lab', label: '실험', still: P + 'zone_2.webp', clip: V + 'zone_2.mp4', scroll: 2.6, linger: 0.45,
       eyebrow: 'Lab & Pilot', title: '실험으로 검증하는 공정 개발',
       html: '<div class="caps">' +
         cap('분리정제 실험', '증류 · 추출 · 흡착 · 여과', ['바이오 유래 케미칼 탈색 · 탈취 공정 개발', 'Pilot Scale 증류 장치 구축 및 실험']) +
         cap('반응 · 중합 실험', '', ['수소화 반응을 통한 이취 물질 전환', 'BTX · 2,3-BDO · Latex 추출 · 증류 · 중합']) +
         cap('실험 장비 · 인프라 구축', '', ['결정화 속도론 측정장비 설계 · 조달']) + '</div>' },
-    { id: 'data', label: '데이터', still: P + 'dive_3.webp', clip: V + 'dive_3.mp4', scroll: 1.9, linger: 0.45,
+    { id: 'data', label: '데이터', still: P + 'zone_3.webp', clip: V + 'zone_3.mp4', scroll: 2.6, linger: 0.45,
       eyebrow: 'Data & AI', title: '데이터로 읽는 공정',
       html: '<div class="caps">' +
         cap('실험 최적화', 'DOE · 베이지안 · Surrogate model', ['논문 2편: Surrogate model 기반 실험 최적화, 능동형 실험 최적화', 'Surrogate model 기반 바이오케미칼 TEA 최적화']) +
         cap('공정 데이터 해석', '이상 탐지 · Explainable AI', ['Fouling 인자 분석, 품질 저해 요소 규명', '중합 압력 예측 및 요인 분석']) +
         cap('비전 · 영상 분석', '', ['라텍스 필름 표면 결함 분석', '결정화 속도론 딥러닝 영상분석 논문 재현']) + '</div>' },
-    { id: 'ai', label: 'AI', still: P + 'dive_4.webp', clip: V + 'dive_4.mp4', scroll: 2.1, linger: 0.45,
+    { id: 'ai', label: 'AI', still: P + 'zone_4.webp', clip: V + 'zone_4.mp4', scroll: 2.8, linger: 0.45,
       eyebrow: 'AI Agents & Platform', title: 'AI로 연구를 잇다',
       html: '<div class="caps">' +
         cap('멀티 에이전트 기반 연구', '', ['연구소 DX TF 기술 리딩 (AI 에이전트 · 로봇)', '오케스트레이터 · 전문 에이전트 · 독립 검증 구조의 연구 검토']) +
         cap('실험 자동화 · 디지털 트윈', '', ['3D 렌더링 모델 개발 및 3D 프린터 활용 자체 실험 설비 제작', 'Isaac Sim 기반 실험 워크셀 트윈 · 로봇 시료 로딩 시뮬레이션']) +
         cap('연구원 검증 플랫폼', '', ['수소문 서비스 개발: GS 해커톤 개발자 리그 2위, 4개 부서 협업', '공개 논문 284건 · 연구자 1,038명 기반 검증자 매칭']) +
         cap('연구 지식 체계', '', ['연구산출물 지식 DB 및 그래프 구축']) + '</div>' },
-    { id: 'journey', label: '이력', still: P + 'dive_5.webp', clip: V + 'dive_5.mp4', scroll: 1.6, linger: 0.4,
+    { id: 'journey', label: '이력', still: P + 'journey.webp', clip: V + 'journey.mp4', scroll: 1.6, linger: 0.4,
       eyebrow: 'Journey', title: '공정은 계속됩니다',
       html: '<ul class="journey"><li><b>2011–2018</b>건국대학교 화학공학 학사 · 석사</li>' +
         '<li><b>2018–2023</b>LG화학 석유화학연구소 선임연구원</li>' +
@@ -115,7 +115,9 @@ const world = mountScrollWorld(document.getElementById('world'), {
         '<a class="ghost" href="mailto:manwooson@gscaltex.com">이메일 보내기 ↗</a>' +
         '<a class="ghost" href="../">포트폴리오 ↗</a></div>' },
   ],
-  connectors: [0, 1, 2, 3, 4, 5].map(i => V + `conn_${i}.mp4`),
+  // hub: intro -> zone 1 has no flight; between zones a locked-camera time-lapse; then the desk reveal
+  connectors: [null, V + 'lapse_0.mp4', V + 'lapse_1.mp4', V + 'lapse_2.mp4', V + 'lapse_3.mp4', V + 'reveal.mp4'],
+  connScroll: 0.8,
 });
 </script>
 </body>
