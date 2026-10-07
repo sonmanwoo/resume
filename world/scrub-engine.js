@@ -191,10 +191,17 @@ function mountScrollWorld(container, config) {
     read();
   }
 
+  // Rail dots / in-copy links land exactly where that section's copy is fully shown:
+  // the first section at its start, the finale at its end (its copy fades in late),
+  // others at their card stop. The jump is instant — a smooth scroll across many
+  // clips would scrub (and fetch) every scene on the way and could trip card stops.
   function jumpTo(i) {
     const seg = SECTIONS[i]._seg;
-    jumpingUntil = performance.now() + 1500;   // a programmatic jump flies past the card stops
-    window.scrollTo({ top: seg.start + (seg.end - seg.start) * 0.5, behavior: reduce ? 'auto' : 'smooth' });
+    const at = i === 0 ? 0 : i === N - 1 ? 1 : (SECTIONS[i].stopAt || 0.5);
+    const y = Math.round(seg.start + (seg.end - seg.start) * at);
+    jumpingUntil = performance.now() + 400; lockUntil = 0; prevY = y;
+    window.scrollTo(0, y);
+    read();
   }
 
   // Card stop: when the scroll crosses a section's copy peak (the middle of its dive),
