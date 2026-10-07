@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>손만우 — Process Engineer</title>
+<link rel="icon" href="../assets/favicon.svg">
+<style>
+  :root, .sw-root {
+    --sw-bg: #0B1621; --sw-ink: #EEF6F3; --sw-ink-soft: #9FB8C8; --sw-accent: #7FD6C0;
+    --sw-font-display: "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+    --sw-font-body: "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+  }
+  .sw-brand__mark { display: none; }
+  .sw-brand__name { font-size: 1.25rem; letter-spacing: .02em; }
+  .sw-brand__name::after { content: "."; color: var(--sw-accent); }
+  /* the engine writes an inline transform for the drift, which drops its own
+     translateY(-50%) centring; `translate` composes separately and keeps tall cards centred */
+  .sw-copy { width: min(44vw, 500px); translate: 0 -50%; max-height: calc(100vh - 120px); }
+  .sw-copy__title { font-size: clamp(1.8rem, 3.4vw, 2.8rem); line-height: 1.15; word-break: keep-all; }
+  .sw-copy__body { word-break: keep-all; }
+
+  /* 역량 카드: 대주제(title) → 역량(cap) → 사례(ex) */
+  .caps { display: grid; gap: 14px; margin-top: 20px; }
+  .cap h3 { position: relative; margin: 0; padding-left: 16px; font-size: clamp(.98rem, 1.2vw, 1.08rem); font-weight: 700; color: var(--sw-ink); line-height: 1.4; }
+  .cap h3::before { content: ""; position: absolute; left: 1px; top: .52em; width: 7px; height: 7px; border-radius: 50%; background: var(--sw-accent); }
+  .cap h3 small { display: block; margin-top: 2px; font-size: .8em; font-weight: 400; color: var(--sw-ink-soft); }
+  .cap ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 3px; }
+  .cap li { position: relative; padding-left: 16px; font-size: clamp(.86rem, 1vw, .95rem); line-height: 1.5; color: color-mix(in srgb, var(--sw-ink) 80%, var(--sw-ink-soft)); word-break: keep-all; }
+  .cap li::before { content: "↳"; position: absolute; left: 0; color: color-mix(in srgb, var(--sw-accent) 70%, var(--sw-ink-soft)); }
+  .journey { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 10px; }
+  .journey li { font-size: clamp(.95rem, 1.15vw, 1.05rem); color: var(--sw-ink); }
+  .journey b { display: inline-block; min-width: 7.5em; color: var(--sw-accent); font-weight: 700; }
+  .to-card { display: inline-block; margin-top: 18px; font-size: .9rem; color: var(--sw-accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--sw-accent) 50%, transparent); pointer-events: auto; cursor: pointer; background: none; border-top: 0; border-left: 0; border-right: 0; padding: 0; font-family: inherit; }
+
+  /* 명함 장면: 영상의 빈 명함 위에 실제 명함을 얹는다 */
+  .sw-copy.is-card { left: 50%; top: 50%; translate: none; max-height: none; transform: translate(-50%, -50%) !important; width: min(560px, 88vw); text-align: center; }
+  .sw-copy.is-card .sw-copy__num { display: none; }
+  .bizcard { aspect-ratio: 9 / 5; background: #FBFBF8; color: #222; border-radius: 10px; box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.25);
+    padding: 7% 8%; text-align: left; display: grid; grid-template-rows: auto 1fr auto; font-family: "Pretendard", "Malgun Gothic", sans-serif; }
+  .bizcard .org { font-size: clamp(.8rem, 2.2vw, 1.05rem); font-weight: 700; color: #1F4FA8; letter-spacing: .01em; }
+  .bizcard .org span { color: #333; font-weight: 600; }
+  .bizcard .who { align-self: center; }
+  .bizcard .name { font-size: clamp(1.4rem, 4.6vw, 2.1rem); font-weight: 700; letter-spacing: .5em; color: #111; }
+  .bizcard .role { margin-top: 4px; font-size: clamp(.78rem, 2vw, .95rem); color: #444; }
+  .bizcard .lines { font-size: clamp(.62rem, 1.6vw, .78rem); line-height: 1.6; color: #444; }
+  .bizcard .lines i { color: #777; }
+  .card-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; pointer-events: auto; }
+  .card-actions a { text-decoration: none; font-size: .9rem; font-weight: 600; padding: 11px 18px; border-radius: 999px; color: var(--sw-bg); background: var(--sw-accent); }
+  .card-actions a.ghost { color: var(--sw-ink); background: color-mix(in srgb, var(--sw-bg) 55%, transparent); border: 1px solid color-mix(in srgb, var(--sw-ink) 30%, transparent); backdrop-filter: blur(6px); }
+
+  @media (max-width: 860px) {
+    .sw-copy { width: auto; translate: none; }
+    .sw-copy.is-card { bottom: auto; }
+    .caps { gap: 10px; margin-top: 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="world"></div>
+<script src="scrub-engine.js?v=2"></script>
+<script>
+const cap = (title, sub, items) =>
+  `<div class="cap"><h3>${title}${sub ? `<small>${sub}</small>` : ''}</h3><ul>${items.map(t => `<li>${t}</li>`).join('')}</ul></div>`;
+const V = 'assets/vid/', P = 'assets/poster/';
+
+const world = mountScrollWorld(document.getElementById('world'), {
+  brand: { name: 'MW', href: '../' },
+  nav: false,
+  hint: 'scroll',
+  diveScroll: 1.4, connScroll: 0.9,
+  sections: [
+    { id: 'intro', label: '소개', still: P + 'dive_0.webp', clip: V + 'dive_0.mp4', scroll: 1.6, linger: 0.3,
+      eyebrow: 'Process Engineer', title: '손만우',
+      body: '화학공학 · 공정 모델링 & 최적화. 실험의 질문을 모델로 풀고, 검증 가능한 공정으로 연결합니다.',
+      html: '<button class="to-card" type="button" onclick="world.jumpTo(6)">명함 바로 보기 →</button>' },
+    { id: 'modeling', label: '모델링', still: P + 'dive_1.webp', clip: V + 'dive_1.mp4', scroll: 1.9, linger: 0.45,
+      eyebrow: 'Process Modeling', title: '공정 모델링 · 최적화 · 검증',
+      html: '<div class="caps">' +
+        cap('공정 시뮬레이션 · 제어', 'Aspen Plus · HYSYS · EDR · Dynamic', ['NCC 공정 최적화, BTX 전공정 모델 구축 및 시운전 지원', 'SRU · OCU 공정 최적화, PID · 모델 기반 제어']) +
+        cap('공정 설계 · Debottlenecking', '', ['신·증설 설계, 에너지 절감, 하절기 공정 병목 개선', 'Xylene 불순물 저감 등 품질 이슈 해결']) +
+        cap('재현 가능한 공정 계산 · 사업성(TEA) 검증', '', ['반도체 케미칼 분리정제 공정 컨셉 정량 비교 패키지']) + '</div>' },
+    { id: 'lab', label: '실험', still: P + 'dive_2.webp', clip: V + 'dive_2.mp4', scroll: 1.9, linger: 0.45,
+      eyebrow: 'Lab & Pilot', title: '실험으로 검증하는 공정 개발',
+      html: '<div class="caps">' +
+        cap('분리정제 실험', '증류 · 추출 · 흡착 · 여과', ['바이오 유래 케미칼 탈색 · 탈취 공정 개발', 'Pilot Scale 증류 장치 구축 및 실험']) +
+        cap('반응 · 중합 실험', '', ['수소화 반응을 통한 이취 물질 전환', 'BTX · 2,3-BDO · Latex 추출 · 증류 · 중합']) +
+        cap('실험 장비 · 인프라 구축', '', ['결정화 속도론 측정장비 설계 · 조달']) + '</div>' },
+    { id: 'data', label: '데이터', still: P + 'dive_3.webp', clip: V + 'dive_3.mp4', scroll: 1.9, linger: 0.45,
+      eyebrow: 'Data & AI', title: '데이터로 읽는 공정',
+      html: '<div class="caps">' +
+        cap('실험 최적화', 'DOE · 베이지안 · Surrogate model', ['논문 2편: Surrogate model 기반 실험 최적화, 능동형 실험 최적화', 'Surrogate model 기반 바이오케미칼 TEA 최적화']) +
+        cap('공정 데이터 해석', '이상 탐지 · Explainable AI', ['Fouling 인자 분석, 품질 저해 요소 규명', '중합 압력 예측 및 요인 분석']) +
+        cap('비전 · 영상 분석', '', ['라텍스 필름 표면 결함 분석', '결정화 속도론 딥러닝 영상분석 논문 재현']) + '</div>' },
+    { id: 'ai', label: 'AI', still: P + 'dive_4.webp', clip: V + 'dive_4.mp4', scroll: 2.1, linger: 0.45,
+      eyebrow: 'AI Agents & Platform', title: 'AI로 연구를 잇다',
+      html: '<div class="caps">' +
+        cap('멀티 에이전트 기반 연구', '', ['연구소 DX TF 기술 리딩 (AI 에이전트 · 로봇)', '오케스트레이터 · 전문 에이전트 · 독립 검증 구조의 연구 검토']) +
+        cap('실험 자동화 · 디지털 트윈', '', ['3D 렌더링 모델 개발 및 3D 프린터 활용 자체 실험 설비 제작', 'Isaac Sim 기반 실험 워크셀 트윈 · 로봇 시료 로딩 시뮬레이션']) +
+        cap('연구원 검증 플랫폼', '', ['수소문 서비스 개발: GS 해커톤 개발자 리그 2위, 4개 부서 협업', '공개 논문 284건 · 연구자 1,038명 기반 검증자 매칭']) +
+        cap('연구 지식 체계', '', ['연구산출물 지식 DB 및 그래프 구축']) + '</div>' },
+    { id: 'journey', label: '이력', still: P + 'dive_5.webp', clip: V + 'dive_5.mp4', scroll: 1.6, linger: 0.4,
+      eyebrow: 'Journey', title: '공정은 계속됩니다',
+      html: '<ul class="journey"><li><b>2011–2018</b>건국대학교 화학공학 학사 · 석사</li>' +
+        '<li><b>2018–2023</b>LG화학 석유화학연구소 선임연구원</li>' +
+        '<li><b>2023–현재</b>GS칼텍스 기술연구소 책임연구원</li></ul>' },
+    { id: 'card', label: '명함', still: P + 'dive_6.webp', clip: V + 'dive_6.mp4', scroll: 1.6, cls: 'is-card', copyAt: 0.62, stopAt: false,
+      html: '<div class="bizcard">' +
+        '<div class="org">GS칼텍스 <span>주식회사</span></div>' +
+        '<div class="who"><div class="name">손만우</div><div class="role">바이오공정팀 &nbsp;|&nbsp; 책임연구원</div></div>' +
+        '<div class="lines">34122 대전광역시 유성구 엑스포로 359 (문지동, GS칼텍스중앙기술연구소)<br>' +
+        '<i>tel</i> 042-866-1719, <i>fax</i> 042-866-1711<br>' +
+        '<i>mobile</i> 010-3112-5602, <i>e-mail</i> manwooson@gscaltex.com</div></div>' +
+        '<div class="card-actions"><a href="../assets/manwoo-son.vcf" download>연락처 저장 ＋</a>' +
+        '<a class="ghost" href="mailto:manwooson@gscaltex.com">이메일 보내기 ↗</a>' +
+        '<a class="ghost" href="../">포트폴리오 ↗</a></div>' },
+  ],
+  connectors: [0, 1, 2, 3, 4, 5].map(i => V + `conn_${i}.mp4`),
+});
+</script>
+</body>
+</html>
